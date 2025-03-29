@@ -1,10 +1,33 @@
 using DiffusionKernels
+using Oceananigans
+using Reactant
+using GLMakie
 
-arch = CPU()
-model = DiffusionKernels.Model(arch, 32, 32, 32)
+# arch = CPU()
+arch = Oceananigans.Architectures.ReactantState()
 
-set!(c, (x, y, z) -> randn())
-@show maximum(c)
+@info "Generating model..."
+model = DiffusionKernels.Model(arch, size=(32, 32, 32))
 
-DiffusionKernels.loop!(model, 100)
-@show maximum(c)
+@info "Before set!: $(maximum(parent(model.c)))"
+set!(model.c, (x, y, z) -> randn())
+
+@info "After set!: $(maximum(parent(model.c)))"
+
+Nt = 1000
+if arch isa Oceananigans.Architectures.ReactantState
+    rNt = ConcreteRNumber(Nt)
+    @info "Compiling loop..."
+    #rloop! = @compile DiffusionKernels.loop!(model, rNt)
+    rstep! = @compile DiffusionKernels.time_step!(model)
+
+    @info "Running loop on $arch..."
+    for n = 1:Nt
+        rstep!(model)
+    end
+else
+    @info "Running loop on $arch..."
+    DiffusionKernels.loop!(model, Nt)
+end
+
+@info "After set!: $(maximum(parent(model.c)))"

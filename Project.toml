@@ -1,0 +1,10 @@
+name = "DiffusionKernels"
+uuid = "32e263da-b770-4c7e-9b70-630321522b17"
+authors = ["Gregory Wagner <gregory.leclaire.wagner@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+KernelAbstractions = "63c18a36-062a-441e-b654-da1e3ab1ce7c"
+Oceananigans = "9e8cae18-63c1-5223-a75c-80ca9d6e9a09"
+OffsetArrays = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
+Reactant = "3c362404-f566-11ee-1572-e11a4b42c853"

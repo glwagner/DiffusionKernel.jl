@@ -1,1 +1,1 @@
-# DiffusionKernel.jl
+# DiffusionKernels.jl
